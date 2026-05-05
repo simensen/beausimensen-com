@@ -1,0 +1,52 @@
+/*
+ * astro-bones — base styles.
+ *
+ * Deliberately minimal. Per-site styles override / extend either by
+ * importing a site-specific CSS file from the layout, or by adding scoped
+ * <style> blocks in components/pages.
+ */
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Avenir Next", "Segoe UI",
+    "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --color-text: #1a1a1a;
+  --color-bg: #ffffff;
+  --color-muted: #6b6b6b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+}
