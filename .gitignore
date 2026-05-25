@@ -8,6 +8,9 @@ node_modules/
 # astro
 .astro/
 
+# fetched content (build artifact — sourced from beausimensen-com-content)
+content/
+
 # environment
 .env
 .env.production

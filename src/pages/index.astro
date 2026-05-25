@@ -6,6 +6,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <main>
     <h1>Beau Simensen</h1>
     <p>The personal website of a professional polyglot programmer.</p>
+    <nav>
+      <a href="/posts/">Posts</a>
+      <a href="/now/">Now</a>
+    </nav>
   </main>
 </BaseLayout>
 
@@ -27,5 +31,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #6b6b6b;
     font-size: 1.125rem;
     line-height: 1.6;
+  }
+  nav {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+  nav a {
+    color: var(--color-text);
+    font-size: 1rem;
+    text-underline-offset: 3px;
   }
 </style>

@@ -1,0 +1,78 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({
+    // Route by explicit frontmatter `slug`, falling back to the file id.
+    params: { slug: page.data.slug ?? page.id },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <main>
+    <article>
+      <header>
+        <h1>{page.data.title}</h1>
+        {
+          page.data.updated && (
+            <time datetime={page.data.updated.toISOString()}>
+              Updated{' '}
+              {page.data.updated.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'UTC',
+              })}
+            </time>
+          )
+        }
+      </header>
+      <Content />
+    </article>
+    <p class="back"><a href="/">← home</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  header {
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.015em;
+  }
+  time {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  article :global(h2) {
+    margin-top: 2.5rem;
+  }
+  article :global(pre) {
+    overflow-x: auto;
+    padding: 1rem;
+    background: #f6f6f4;
+    border-radius: 6px;
+  }
+  .back {
+    margin-top: 3rem;
+  }
+  a {
+    color: var(--color-text);
+    text-underline-offset: 2px;
+  }
+</style>

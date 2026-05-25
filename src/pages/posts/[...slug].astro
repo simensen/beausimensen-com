@@ -1,0 +1,84 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <main>
+    <article>
+      <header>
+        <h1>{post.data.title}</h1>
+        <time datetime={post.data.date.toISOString()}>
+          {
+            post.data.date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              timeZone: 'UTC',
+            })
+          }
+        </time>
+      </header>
+      <Content />
+      {
+        post.data.tags && post.data.tags.length > 0 && (
+          <footer>
+            <small>Tagged: {post.data.tags.join(', ')}</small>
+          </footer>
+        )
+      }
+    </article>
+    <p class="back"><a href="/posts/">← all posts</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+  }
+  header {
+    margin-bottom: 2rem;
+  }
+  header h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.015em;
+  }
+  time {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+  article :global(h2) {
+    margin-top: 2.5rem;
+  }
+  article :global(pre) {
+    overflow-x: auto;
+    padding: 1rem;
+    background: #f6f6f4;
+    border-radius: 6px;
+  }
+  footer {
+    margin-top: 2.5rem;
+  }
+  .back {
+    margin-top: 3rem;
+  }
+  a {
+    color: var(--color-text);
+    text-underline-offset: 2px;
+  }
+</style>

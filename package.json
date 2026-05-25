@@ -4,13 +4,15 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "fetch-content": "scripts/fetch-content.sh",
+    "dev": "npm run fetch-content && astro dev",
+    "start": "npm run dev",
+    "build": "npm run fetch-content && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.18",
     "astro": "6.2.1"
   },
   "devDependencies": {
