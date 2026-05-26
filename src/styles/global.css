@@ -16,6 +16,14 @@
   --color-muted: #6b6b6b;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f1f1ed;
+    --color-bg: #111310;
+    --color-muted: #a8aca5;
+  }
+}
+
 *,
 *::before,
 *::after {

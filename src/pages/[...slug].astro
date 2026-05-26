@@ -40,11 +40,60 @@ const { Content } = await render(page);
   </main>
 </BaseLayout>
 
+<script>
+  const blocks = Array.from(document.querySelectorAll<HTMLElement>('pre[data-language="mermaid"]'));
+
+  if (blocks.length > 0) {
+    const { default: mermaid } = await import('mermaid');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: 'base',
+      themeVariables: {
+        background: 'transparent',
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Avenir Next", "Segoe UI", "Helvetica Neue", system-ui, sans-serif',
+        primaryColor: prefersDark ? '#232624' : '#f8f8f5',
+        primaryTextColor: prefersDark ? '#f1f1ed' : '#1a1a1a',
+        primaryBorderColor: prefersDark ? '#6f756e' : '#aaa89f',
+        lineColor: prefersDark ? '#a8aca5' : '#5f635c',
+        clusterBkg: prefersDark ? '#181a18' : '#ffffff',
+        clusterBorder: prefersDark ? '#626860' : '#c9c7be',
+        titleColor: prefersDark ? '#f1f1ed' : '#1a1a1a',
+      },
+    });
+
+    for (const [index, block] of blocks.entries()) {
+      const source = block.textContent?.trim();
+
+      if (!source) {
+        continue;
+      }
+
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.id = `mermaid-${index}`;
+      diagram.textContent = source;
+      block.replaceWith(diagram);
+    }
+
+    await mermaid.run({
+      nodes: Array.from(document.querySelectorAll<HTMLElement>('.mermaid')),
+    });
+  }
+</script>
+
 <style>
   main {
-    max-width: 38rem;
+    max-width: 64rem;
     margin: 0 auto;
     padding: 4rem 1.5rem;
+  }
+  article {
+    max-width: 38rem;
+    margin: 0 auto;
   }
   header {
     margin-bottom: 2rem;
@@ -68,11 +117,33 @@ const { Content } = await render(page);
     background: #f6f6f4;
     border-radius: 6px;
   }
+  article :global(.mermaid) {
+    width: min(64rem, calc(100vw - 3rem));
+    margin: 2rem 50% 1.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    transform: translateX(-50%);
+  }
+  article :global(.mermaid svg) {
+    display: block;
+    width: max(40rem, 100%);
+    max-width: none;
+    height: auto;
+    margin: 0 auto;
+  }
   .back {
+    max-width: 38rem;
+    margin-right: auto;
+    margin-left: auto;
     margin-top: 3rem;
   }
   a {
     color: var(--color-text);
     text-underline-offset: 2px;
+  }
+  @media (prefers-color-scheme: dark) {
+    article :global(pre) {
+      background: #20221f;
+    }
   }
 </style>
