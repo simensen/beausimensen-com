@@ -6,8 +6,8 @@ import { defineConfig } from 'astro/config';
 // follow the current Astro Cloudflare Workers adapter guide.
 
 export default defineConfig({
-  // Production URL. Required so RSS item links and `context.site` resolve to
-  // absolute URLs that work in feed readers.
-  site: 'https://beausimensen.com',
+  build: { format: 'file' },
   output: 'static',
+  site: 'https://beausimensen.com',
+  trailingSlash: 'never',
 });
